@@ -7,6 +7,11 @@ int main(){
 	int year, month, day, hour, minute, second;
 	int milli = 0; //not time accurate milliseconds
 	WINDOW *w = initscr();
+	if (has_colors()) {
+	    start_color();
+	    init_pair(1, COLOR_CYAN, COLOR_BLACK);
+	    attron(COLOR_PAIR(1));
+	}
 	curs_set(0);
 	nodelay(w, TRUE); //Set keyboard interrupt to non-blocking
     int intercept = 0;
