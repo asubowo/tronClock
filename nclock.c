@@ -6,11 +6,12 @@ int main(){
 	int row, col;
 	int year, month, day, hour, minute, second;
 	int milli = 0; //not time accurate milliseconds
-	initscr();
+	WINDOW *w = initscr();
 	curs_set(0);
-
-	while(1){
-	    	char buff[100];
+	nodelay(w, TRUE); //Set keyboard interrupt to non-blocking
+    int intercept = 0;
+	while(!intercept) {
+	    char buff[100];
 		time_t now = time(0);
 		getmaxyx(stdscr, row, col);
 		struct tm now_t = *localtime(&now);
@@ -30,10 +31,16 @@ int main(){
 			milli+=1;
 		}
 
-	move(row/2,(col-20)/2);
-	printw("%d:%02d:%02d:%02d:%02d:%02d:%d",year,month,day,hour,minute,second,milli);
-	refresh();
- 	usleep(10000);
+		move(row/2,(col-20)/2);
+		printw("%d:%02d:%02d:%02d:%02d:%02d:%d",year,month,day,hour,minute,second,milli);
+		refresh();
+		usleep(10000);
+		intercept = getch();
+		if (intercept > 0) {
+			intercept = 1;
+		} else {
+			intercept = 0;
+		}
 	}
 endwin();	
 return 0;
